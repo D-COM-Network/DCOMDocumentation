@@ -8,6 +8,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3  
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+      - run: npm install -g npm@latest
+      - run: npm install -g bootprint bootprint-openapi
+      - run: mkdir dist
+      - run: mkdir dist/resources
+      - run: mkdir dist/dcomcore
+      - run: python -m ensurepip
+      - run: python -m pip install mkdocs mkdocs-windmill json-schema-for-humans
+      - run: generate-schema-doc APIDefinitions/compliancedocument.schema.json dist/resources/compliancedocument.html
+      - run: generate-schema-doc APIDefinitions/compliancedocument.schema-rase.json dist/resources/compliancedocumentRASE.html
+      - run: generate-schema-doc APIDefinitions/compliancedocument.schema-explicit.json dist/resources/compliancedocumentEXPLICIT.html
+      - run: bootprint openapi APIDefinitions/RuleEngineInterface/ruleengineinterface.json dist/resources/ruleengineinterface
+      - run: bootprint openapi APIDefinitions/ComplianceDocumentServer/compliancedocumentserver.json dist/resources/compliancedocumentserver
+      - run: bootprint openapi APIDefinitions/RuleEngine/ruleengine.json dist/resources/ruleengine
+      - run: bootprint openapi APIDefinitions/ResultsService/resultservice.json dist/resources/resultserver
+      - run: mkdocs build
+      - run: cp -R site/* dist/
+      - run: rm -rf site
+      - run: cp html/* dist/
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

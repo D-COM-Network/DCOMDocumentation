@@ -1,0 +1,38 @@
+{
+"ckterms:projectStage":"CIC4:Technical design",
+"dcterms:coverage.temporal":"2020-11-26",
+"dcterms:coverage.spatial":"GB-ENG",
+"dcterms:dateCreated":"2019-01-01",
+"dcterms:modified":"2020-11-26",
+"ckterms:accessLocation":"TBC",
+"dcterms:identifier":"hJJ3qCORuUmX8LWK0_SZQQ",
+"dcterms:language":"en-gb",
+"ckterms:version":"1.0",
+"dcterms:title":"The Building Regulations 2010 - Fire Safety - Approved Document B  - Volume 2: Buildings other than dwellings",
+"dcterms:type":"Guidance",
+"ckterms:sector":["Co_20:Administrative, commercial and protective service complexes","Co_25:Cultural, educational, scientific and information complexes","Co_30:Industrial complexes","Co_32:Water and land management complexes","Co_35:Medical, health, welfare and sanitary complexes","Co_40:Recreational complexes","Co_42:Sport and activity complexes","Co_50:Waste disposal complexes","Co_55:Piped supply complexes","Co_60:Heating, cooling and refrigeration complexes","Co_65:Ventilation and air conditioning complexes","Co_70:Electrical power generation and distribution complexes","Co_75:Communications, security, safety and protection complexes","Co_80:Transport complexes","Co_90:Circulation and storage complexes"],
+"dcterms:subject":["Co_20:Administrative, commercial and protective service complexes","Co_25:Cultural, educational, scientific and information complexes","Co_30:Industrial complexes","Co_32:Water and land management complexes","Co_35:Medical, health, welfare and sanitary complexes","Co_40:Recreational complexes","Co_42:Sport and activity complexes","Co_50:Waste disposal complexes","Co_55:Piped supply complexes","Co_60:Heating, cooling and refrigeration complexes","Co_65:Ventilation and air conditioning complexes","Co_70:Electrical power generation and distribution complexes","Co_75:Communications, security, safety and protection complexes","Co_80:Transport complexes","Co_90:Circulation and storage complexes"],
+"sections":[{
+  "dcterms:identifier":"hSGB1-fufEiacSuJk8k62g",
+  "dcterms:title":"Fire detection and alarm systems",
+  "numbered":"Global",
+  "sections":[
+    {
+      "dcterms:identifier":"xwvgHCgydk2g0xOXFUUBDg",
+      "dcterms:title":"General provisions",
+      "numbered":false,
+      "paragraphs":[
+
+      ]
+    },
+    {
+      "dcterms:identifier":"MSriiQXQn0uDeengQVGHLA",
+      "dcterms:title":"Fire detection and alarm systems",
+      "numbered":false,
+      "paragraphs":[
+
+      ]
+    }
+  ]
+}]
+}

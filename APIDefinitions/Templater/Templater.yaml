@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: BRE Templater 1 - DCOM
+  description: >-
+    This tool is part of the BRE Digital ecosystem providing a free to list
+    opportunity for manufacturers and a free to access for Designers,
+    Constructors, Owners, Operators and Maintainers. Developed by BRE in
+    collaboration with Activeplan this is a Tool to facilitate the
+    implementation of BIM data standards across the asset lifecycle.
+  version: 1.0.0
+servers:
+  - url: https://templater-dcom.transformingconstruction.co.uk
+paths:
+  /connect/gettoken:
+    post:
+      tags:
+        - General
+      summary: Authorization
+      description: get the authorization token to start using the api calls
+      requestBody:
+        content: {}
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/x-www-form-urlencoded
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/TemplateApi/getTemplatesPaged:
+    post:
+      tags:
+        - General
+      summary: GetTemplatesPaged
+      description: Get list of templates paged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                Offset: 0
+                Limit: 10
+                Order: asc
+                Sort: null
+                Search: null
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/PropertySetApi/GetTemplatePropertySets:
+    post:
+      tags:
+        - General
+      summary: GetTemplatePropertySets
+      description: Get the template attributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                IdTemplate: b120bec3-b6fc-4b03-94c5-fe52ae7c2597
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/AttributeApi/GetTemplatePropertySetAttributes:
+    post:
+      tags:
+        - General
+      summary: GetTemplatePropertySetAttributes
+      description: Get the template attributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                IdTemplate: b224573d-da93-4a3d-98a2-1aad0f1479bc
+                IdTemplatePropertySet: 5f84d0bf-36cc-40a2-9a41-9ef1ab97e7b1
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/AttributeApi/GetTemplateAttributes:
+    post:
+      tags:
+        - General
+      summary: GetTemplateAttributes
+      description: Get the template attributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                IdTemplate: b224573d-da93-4a3d-98a2-1aad0f1479bc
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/AttributeApi/GetTemplateAttribute:
+    post:
+      tags:
+        - General
+      summary: GetTemplateAttribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                IdTemplate: b224573d-da93-4a3d-98a2-1aad0f1479bc
+                IdAttribute: 56a8f63a-8090-481e-9563-38fa48ca6e50
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

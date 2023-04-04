@@ -1,0 +1,491 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://docs.dcom.org.uk/compliancedocument.schema.json",
+  "title": "ComplianceDocument",
+  "description": "A digitised form of a document containing construction industry, regulations, requirements, standards and guidance. A compliance document contains both human readable text, figures/tables and machine-readable structure and logic to enable automated compliance checking.",
+  "type": "object",
+  "properties": {
+    "dcterms:title":{
+      "description":"The title of the Compliance Document",
+      "type":"string"
+    },
+    "ckterms:projectStage":{
+      "description":"The stage of the project life cycle the compliance document is relevant to. Values selected from the RIBA 2020 / CIC Plan of Work. Value should be One of more from the CIC Plan of Work: of i.e. CIC3: Concept design",
+      "type":"array",
+      "items":{
+        "type":"string",
+        "enum":["0: Strategic definition","1: Preparation and briefing","2: Concept design","3: Spatial coordination","4: Technical design","5: Manufacturing and construction","6: Handover","C7: Use"]
+      }
+    },
+    "dcterms:subject":{
+      "description":"The building types in scope of the document. Values selected from Uniclass 2015 Entities Tables. One or more of i.e. Primary schools Hospital complexes",
+      "type":"array",
+      "items":{
+        "type":"string"
+      }
+    },
+    "ckterms:accessLocation":{
+      "description":"The URL at which to access this element of the document.",
+      "type":"string"
+    },
+    "dcterms:coverage.temporal":{
+      "description":"The time period the document is applicable to. ISO Date/Time i.e. 2020-12-25T19:20:30",
+      "type":"array",
+      "items":{
+        "type":"date-time",
+        "minItems":1,
+        "maxItems":2
+      }
+    },
+    "dcterms:coverage.spatial":{
+      "description":"The geographical area the document is relevant to. Specified using terms from ISO 3166-2. One or more of i.e. GB-ENG GB-WLS GB-TWH",
+      "type":"array",
+      "items":{
+        "type":"string"
+      }
+    },
+    "dcterms:dateCreated":{
+      "description":"The date the document was created. ISO Date/Time",
+      "type":"date-time"
+    },
+    "dcterms:modified":{
+      "description":"The date the document was modified. ISO Date/Time",
+      "type":"date-time"
+    },
+    "dcterms:accessRights":{
+      "description":"Information about who can access the document or any indication of its security status. Must use one of the following: Open Access Registration Required Subscription Required Membership Required Purchase Required Limited Access Internal. Ordinarily all construction regulations will be open access.",
+      "type":"array",
+      "items":{
+        "type":"string",
+        "enum":["Open Access","Registration Required","Subscription Required","Membership Required","Purchase Required","Limited Access","Internal"]
+      }
+    },
+    "dcterms:format":{
+      "description":"The format of the document.",
+      "type":"string",
+      "items":{
+        "type":"string",
+        "enum":["application/json","text/html"]
+      }
+    },
+    "dcterms:identifier":{
+      "description":"An unambiguous reference to the document (or its subcomponent) within a given context.",
+      "type":"string"
+    },
+    "dcterms:language":{
+      "description":"The language of the document. One value from ISO 639.",
+      "type":"string"
+    },
+    "dcterms:relation":{
+      "description":"A related resource that is a dependency to this document.",
+      "type":"array",
+      "items":{
+        "type":"string"
+      }
+    },
+    "ckterms:version":{
+      "description":"The version number for the specific version of the document. i.e. 1.01",
+      "type":"string"
+    },
+    "dcterms:replaces":{
+      "description":"A related document that is supplanted, displaced, or superseded by the document. The URL of the document being replaced.",
+      "type":"string"
+    },
+    "dcterms:isReplacedBy":{
+      "description":"A related document that supersedes the described document. The URL of the document this was replaced by.",
+      "type":"string"
+    },
+    "dcterms:rights":{
+      "description":"Information about rights held in and over the document. The name of the license that applies to the document or a copyright notice.",
+      "type":"string"
+    },
+    "dcterms:publisher":{
+      "description":"The person or organisation responsible for making the document.",
+      "type":"string"
+    },
+    "dcterms:description":{
+      "description":"Ann abstract or summary of the contents of the document.",
+      "type":"string"
+    },
+    "ckterms:sector":{
+      "description":"The market sector(s) the document specified by one of the top-level group terms of Uniclass 2015 Entites table .i.e. Residential complexes Waste disposal complexes Piped supply complexes ",
+      "type":"array",
+      "items":{
+        "type":"string"
+      }
+    },
+    "dcterms:type":{
+      "description":"The type of the document. One or more values from Policy, Legislation, Regulations, Guidance, Standards, Products, Testing/Simulating, Certificates of Conformity, Requirements, Specification",
+      "type":"string",
+      "enum":["Policy","Legislation","Regulations","Guidance", "Standards", "Products", "Testing/Simulating", "Certificates of Conformity","Requirements", "Specification"]
+    },
+    "dcom:startSectionNumber":{
+      "description":"The starting value to be used in numbering of sections. Default is 1.",
+      "type":"number"
+    },
+    "dcom:startParagraphNumber":{
+      "description":"The starting value to be used in numbering of paragraphs. Default is 1.",
+      "type":"number"
+    },
+    "sections":{
+      "type":"array",
+      "description":"The top level sections that make up the document",
+      "items":{
+        "$ref": "#/definitions/Section"
+      }
+    }
+  },
+  "required":["dcterms:title","ckterms:projectStage","dcterms:subject","dcterms:coverage.temporal","dcterms:coverage.temporal","dcterms:coverage.spatial","dcterms:modified","dcterms:dateCreated","dcterms:identifier","dcterms:language","ckterms:version","ckterms:sector","dcterms:type","sections"],
+  "definitions": {
+    "Paragraph":{
+      "type":"object",
+      "properties":{
+        "numbered":{
+            "description":"If the paragraph should be numbered",
+            "type":"string",
+            "enum":["None","Global"]
+        },
+        "numberedstyle":{
+            "description":"The style of the numbering - default numeric",
+            "type":"string",
+            "enum":["A","a","i","I","1"]
+        },
+        "rules":{
+          "type":"array",
+          "description":"The explicit logic rules of this paragraph",
+          "items":{
+            "oneOf": [{"$ref": "#/definitions/LimitRule"},{"$ref": "#/definitions/BooleanRule"},{"$ref": "#/definitions/ValueRule"},{"$ref": "#/definitions/RangeRule"}]
+          }
+        },
+        "ckterms:accessLocation":{
+          "description":"The URL at which to access this element of the document.",
+          "type":"string"
+        },
+        "paragraphs":{
+          "type":"array",
+          "description":"The sub-paragraphs that make up this paragraph",
+          "items":{
+            "$ref": "#/definitions/Paragraph"
+          }
+        },
+        "dcterms:identifier":{
+          "description":"An unambiguous reference to the document (or its subcomponent) within a given context.",
+          "type":"string"
+        },
+        "dcterms:relation":{
+          "description":"A related resource that is a dependency of this paragraph.",
+          "type":"array",
+          "items":{
+            "type":"string"
+          }
+        },
+        "dcterms:replaces":{
+          "description":"The paragraph that is supplanted, displaced, or superseded by this paragraph. The URL of the paragraph being replaced.",
+          "type":"string"
+        },
+        "dcterms:isReplacedBy":{
+          "description":"The paragraph that supersedes this paragraph. The URL of the paragraph this was replaced by.",
+          "type":"string"
+        },
+        "body":{
+          "type":"string",
+          "description":"The body text for this paragraph."
+        },
+        "inserts":{
+          "type":"array",
+          "description":"The inserts used in this paragraph",
+          "items":{
+            "oneOf":[{"$ref": "#/definitions/Table"},{"$ref": "#/definitions/Figure"}]
+          }
+        }
+      },
+      "required":["dcterms:identifier","body"]
+    },
+    "Section":{
+      "type":"object",
+      "properties":{
+        "numbered":{
+            "description":"If the section should be numbered",
+            "type":"string",
+            "enum":["None","Global"]
+        },
+        "numberedstyle":{
+            "description":"The style of the numbering - default numeric",
+            "type":"string",
+            "enum":["A","a","i","I","1"]
+        },
+        "dcterms:title":{
+          "description":"The title of the Section",
+          "type":"string"
+        },
+        "dcterms:identifier":{
+          "description":"An unambiguous reference to the section within a given context.",
+          "type":"string"
+        },
+        "dcterms:relation":{
+          "description":"A related resource that is a dependency of this section.",
+          "type":"array",
+          "items":{
+            "type":"string"
+          }
+        },
+        "ckterms:accessLocation":{
+          "description":"The URL at which to access this element of the document.",
+          "type":"string"
+        },
+        "dcterms:replaces":{
+          "description":"The section that is supplanted, displaced, or superseded by this section. The URL of the section being replaced.",
+          "type":"string"
+        },
+        "dcterms:isReplacedBy":{
+          "description":"The section that supersedes this section. The URL  the section this was replaced by.",
+          "type":"string"
+        },
+        "sections":{
+          "type":"array",
+          "description":"The sub sections that make up the section",
+          "items":{
+            "$ref": "#/definitions/Section"
+          }
+        },
+        "paragraphs":{
+          "type":"array",
+          "description":"The paragraphs that make up the section",
+          "items":{
+            "$ref": "#/definitions/Paragraph"
+          }
+        }
+      },
+      "required":["dcterms:identifier"]
+    },
+    "Figure":{
+      "type":"object",
+      "properties":{
+        "caption":{
+          "type":"string",
+          "description":"The caption for the table"
+        },
+        "alternativeText":{
+          "type":"string",
+          "description":"The alternative text for this figure"
+        },
+        "imageData":{
+          "type":"string",
+          "description":"The imageData encoding as a data URL"
+        }
+      },
+      "require":["caption","imageData"]
+    },
+    "Table":{
+      "type":"object",
+      "properties":{
+        "caption":{
+          "type":"string",
+          "description":"The caption for the table"
+        },
+        "header":{
+          "$ref": "#/definitions/TableGroup"
+        },
+        "body":{
+          "$ref": "#/definitions/TableGroup"
+        },
+        "footer":{
+          "$ref": "#/definitions/TableGroup"
+        }
+
+      },
+      "require":["caption","body"]
+    },
+    "TableGroup":{
+      "type":"object",
+      "properties":{
+        "rows":{
+          "description":"The rows in the table group",
+          "type":"array",
+          "items":{
+            "type":"object",
+            "properties":{
+              "cells":{
+                "type":"array",
+                "description":"The Cells in this Row",
+                "items":{
+                      "type":"object",
+                      "properties":{
+                        "colspan":{
+                            "description":"The number of columns this cell spans",
+                            "type":"numeric"
+                        },
+                        "rowspan":{
+                          "description":"The number of rows this cell spans",
+                          "type":"numeric"
+                        },
+                        "cellType":{
+                          "description":"The type of this cell",
+                          "type":"string",
+                          "enum":["TitleCell","DataCell"]
+                        }
+                      },
+                      "required":["cellType"]
+                }
+              }
+            },
+            "required":["cells"]
+          }
+        }
+      },
+      "required":["rows"]
+    },
+    "RangeRule":{
+      "type":"object",
+      "properties":{
+        "ruleId":{
+          "type":"string",
+          "description":"The ID of the Rule"
+        },
+        "ruleText":{
+          "type":"string",
+          "description":"The text of the Rule"
+        },
+        "type":{
+          "type":"string",
+          "description":"The type of the rule",
+          "enum":["IS","TO","IF","RUN","XRUN"]
+        },
+        "lowerValue":{
+          "type":"numeric",
+          "description":"The lower bound of the range"
+        },
+        "upperValue":{
+          "type":"numeric",
+          "description":"The upper bound of the range"
+        },
+        "unit":{
+          "type":"string",
+          "description":"The unit of the value, taken from the BSDD list of units."
+        },
+        "command":{
+          "type":"string",
+          "description":"The command of the rule",
+          "enum":["NEXT","GOTO","SKIP","XRETURN"]
+        },  "dependency":{
+            "type":"string",
+            "description":"Another document of reference this rule is dependent on"
+          }
+
+      },
+      "require":["ruleId","ruleText","type","lowerValue","upperValue","command"]
+    },
+    "BooleanRule":{
+      "type":"object",
+      "properties":{
+        "ruleId":{
+          "type":"string",
+          "description":"The ID of the Rule"
+        },
+        "ruleText":{
+          "type":"string",
+          "description":"The text of the Rule"
+        },
+        "type":{
+          "type":"string",
+          "description":"The type of the rule",
+          "enum":["IS","TO","IF","RUN","XRUN"]
+        },
+        "value":{
+          "type":"boolean",
+          "description":"The boolean value to be compared against"
+        },
+        "command":{
+          "type":"string",
+          "description":"The command of the rule",
+          "enum":["NEXT","GOTO","SKIP","XRETURN"]
+        },
+        "dependency":{
+          "type":"string",
+          "description":"Another document of reference this rule is dependent on"
+        }
+
+      },
+      "require":["ruleId","ruleText","type","value","command"]
+    },
+    "ValueRule":{
+      "type":"object",
+      "properties":{
+        "ruleId":{
+          "type":"string",
+          "description":"The ID of the Rule"
+        },
+        "ruleText":{
+          "type":"string",
+          "description":"The text of the Rule"
+        },
+        "type":{
+          "type":"string",
+          "description":"The type of the rule",
+          "enum":["IS","TO","IF","RUN","XRUN"]
+        },
+        "value":{
+          "type":"numeric",
+          "description":"The value to be compared against"
+        },
+        "unit":{
+          "type":"string",
+          "description":"The unit of the value, taken from the BSDD list of units."
+        },"command":{
+          "type":"string",
+          "description":"The command of the rule",
+          "enum":["NEXT","GOTO","SKIP","XRETURN"]
+        },
+        "dependency":{
+          "type":"string",
+          "description":"Another document of reference this rule is dependent on"
+        }
+
+
+      },
+      "require":["ruleId","ruleText","type","value","command"]
+    },
+    "LimitRule":{
+      "type":"object",
+      "properties":{
+        "ruleId":{
+          "type":"string",
+          "description":"The ID of the Rule"
+        },
+        "ruleText":{
+          "type":"string",
+          "description":"The text of the Rule"
+        },
+        "type":{
+          "type":"string",
+          "description":"The type of the rule",
+          "enum":["IS","TO","IF","RUN","XRUN"]
+        },
+        "operator":{
+          "type":"string",
+          "description":"The operator to use",
+          "enum":["LT","GT","GTE","LTE"]
+        },
+        "value":{
+          "type":"numeric",
+          "description":"The numeric limit"
+        },
+        "unit":{
+          "type":"string",
+          "description":"The unit of the value, taken from the BSDD list of units."
+        },"command":{
+          "type":"string",
+          "description":"The command of the rule",
+          "enum":["NEXT","GOTO","SKIP","XRETURN"]
+        },
+        "dependency":{
+          "type":"string",
+          "description":"Another document of reference this rule is dependent on"
+        }
+
+
+      },
+      "require":["ruleId","ruleText","type","value","operator","command"]
+    }
+  }
+}

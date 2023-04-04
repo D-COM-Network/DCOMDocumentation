@@ -1,0 +1,1085 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "DCOM Rule Engine  API",
+    "description": "This is the API that is  implemented by a DCOM Rule Engine to connect to it.\nversion: '1.0.0'"
+  },
+  "basePath": "/v1/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json",
+    "application/xml"
+  ],
+  "produces": [
+    "application/json",
+    "application/xml"
+  ],
+  "securityDefinitions": {
+    "authService": {
+      "name": "Authorization",
+      "type": "bearer",
+      "description": "A bearer token to identify the connecting service as an authorizied software tool accredited to provide compliance data",
+      "in": "header"
+    },
+    "authUser": {
+      "name": "Authorization",
+      "type": "bearer",
+      "description": "A bearer token to identify the connecting user.  Acquired from the OAUTH2 Security Service related to this service.",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/v1/": {
+      "get": {
+        "summary": "Retrieves the basic metadata about the Rule Engine",
+        "description": "Retrieves the basic metadata about the Rule Engine",
+        "operationId": "GET--v1",
+        "responses": {
+          "200": {
+            "description": "Returns basic metadata about the Rule Engine. Equivalent XML Response is returned if content type is set appropriately.",
+            "schema": {
+              "$ref": "#/definitions/ServerIdentity"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Initialises a compliance check",
+        "description": "Initialises a compliance check",
+        "operationId": "PUT--v1",
+        "responses": {
+          "200": {
+            "description": "Returns a GUID for the compliance check",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "complianceId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "success"
+              ]
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "required": true,
+            "schema": {
+
+                  "$ref": "#/definitions/InitialisationData"
+
+            },
+            "in": "body"
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}": {
+      "get": {
+        "summary": "Returns an overview of the project entities that the rule engine is aware of and the data required for them",
+        "description": "Returns an overview of the project entities that the rule engine is aware of and the data required for them",
+        "operationId": "GET--v1--complianceCheckUID",
+        "responses": {
+          "200": {
+            "description": "Returns the set of entities and the data required for them",
+            "schema": {
+              "type":"object",
+              "properties": {
+                "idSet":{
+                  "type":"array",
+                  "description":"The set of IDs the rule engine is currently utilising",
+                  "items":{
+                    "$ref": "#/definitions/IDSet"
+                  }
+                },
+                "conditions": {
+                  "description":"A set of conditions for the approval submitted to the rule engine.",
+                  "type": "array",
+                  "items": {
+                    "type":"string"
+                  }
+              },
+              "approval":{
+                "description":"The overall approval status of this application",
+                "type": "string",
+                "enum": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ]
+              },
+              "log": {
+                "description":"A set of logs describing the process of this application.",
+                "type": "array",
+                "items": {
+                  "type":"string"
+                }
+            },
+            "messages": {
+              "description":"A set of messages lodges about this application.",
+              "type": "array",
+              "items": {
+                "type":"string"
+              }
+            },
+            "securityServiceType": {
+              "type": "string",
+              "description":"The type of authorisation/authentication service used by this rule engine"
+
+            },
+            "securityServiceURI": {
+              "type": "string",
+              "description":"The URL of the OAUTH2 security service utilised by this rule engine"
+            }
+            }
+          }
+         }
+        },
+        "security": [
+          {
+            "authUser": [],
+            "authService": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "summary": "Updates the ID Set used within the Rule Engine",
+        "description": "Updates the ID used within the Rule Engine",
+        "operationId": "POST--v1--complianceCheckUID",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "success"
+              ],
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": [],
+            "authService": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ids": {
+                  "description":"A list of entity IDs available on the connecting data source.",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "in": "body"
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}/answers": {
+      "post": {
+        "summary": "Enables the submission of answers to compliance questions to the rule engine",
+        "description": "Enables the submission of answers to compliance questions to the rule engine",
+        "operationId": "POST--v1--complianceCheckUID--answers",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "success"
+              ],
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": [],
+            "authService": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answers": {
+                  "description":"A set of answers submitted to the rule engine.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Answer"
+                  }
+                }
+              }
+            },
+            "in": "body"
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}/approval": {
+      "post": {
+        "summary": "Enables the signalling of approval (or not) and the transmission of associated conditions with an approval to the rule engine for onward transmission to the result service.",
+        "description": "Enables the signalling of approval (or not) and the transmission of associated conditions with an approval to the rule engine for onward transmission to the result service.",
+        "operationId": "POST--v1--approval--data",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "success"
+              ],
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "conditions": {
+                  "description":"A set of conditions for the approval submitted to the rule engine.",
+                  "type": "array",
+                  "items": {
+                    "type":"string"
+                  }
+              },
+              "approval":{
+                "description":"The overall approval status of this application (if changed)",
+                "type": "string",
+                "enum": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ]
+              }
+            }
+            },
+            "in": "body"
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}/messaging": {
+      "put": {
+        "summary": "Enables the sending of a message to the other parties in the compliance checking process",
+        "description": "Enables the sending of a message to the other parties in the compliance checking process",
+        "operationId": "POST--v1--messaging--data",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "success"
+              ],
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+              "message":{
+                "description":"The message to send.",
+                "type": "string"
+              }
+            }
+            },
+            "in": "body"
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}/data": {
+      "post": {
+        "summary": "Enables the submission of compliance data to the rule engine to the implementing service.",
+        "description": "Enables the submission of compliance data to the rule engine to the implementing service.",
+        "operationId": "POST--v1--complianceCheckUID--data",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "success"
+              ],
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": [],
+            "authService": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dataItems": {
+                  "description":"A set of data submitted to the rule engine.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/DataItem"
+                  }
+                }
+              }
+            },
+            "in": "body"
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}/{entityId}": {
+      "get": {
+        "summary": "Retrieves feedback on a given entity",
+        "description": "Retrieves feedback on a given entity",
+        "operationId": "GET--v1--complianceCheckUID--entityId",
+        "responses": {
+          "200": {
+            "description": "returns a set of feedback on the request element/clause",
+            "schema": {
+              "properties": {
+                "properties": {
+                  "type": "array",
+                  "description":"The list of properties of the give entity that have compliance results",
+                  "items": {
+                    "type":"string"
+                  }
+                },
+                "complianceResults": {
+                  "type": "array",
+                  "description":"A set of compliance results for this entity grouped by properties (as per the order in in the properties field)",
+                  "items": {
+                    "type":"array",
+                    "items": {
+                        "$ref": "#/definitions/ComplianceResultDataItem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": [],
+            "authService": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "entityId",
+            "type": "string",
+            "description":"The unique ID of the entity about which feedback is requested.",
+            "in": "path",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}/{clauseId}": {
+      "get": {
+        "summary": "Retrieves feedback on a given clause",
+        "description": "Retrieves feedback on a given clause",
+        "operationId": "GET--v1--complianceCheckUID--clauseId",
+        "responses": {
+          "200": {
+            "description": "returns a set of feedback on the request element/clause",
+            "schema": {
+              "properties": {
+                "entities": {
+                  "type": "array",
+                  "description":"A set of entity IDs that have results applicable to this clause",
+                  "items": {
+                    "type":"string"
+                  }
+                },
+                "complianceResults": {
+                  "type": "array",
+                  "description":"A set of compliance results grouped by entities (as per the order in in the entities field)",
+                  "items": {
+                    "type":"array",
+                    "items": {
+                        "$ref": "#/definitions/ComplianceResultDataItem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": [],
+            "authService": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "clauseId",
+            "type": "string",
+            "description":"The unique ID of the clause§ about which feedback is requested.",
+            "in": "path",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}/bcf": {
+      "get": {
+        "summary": "Enables the retrieval of a BCF File documenting any issues identified by the rule engine as part of the checking process",
+        "description": "Enables the retrieval of a BCF File documenting any issues identified by the rule engine as part of the checking process",
+        "operationId": "GET--v1--complianceCheckUID--bcf",
+        "produces":["application/zip"],
+        "responses": {
+          "200": {
+            "description": "Returns a BCFzip File as described <a href='https://github.com/buildingSMART/BCF-XML' target='_blank'>here</a>"
+          }
+        },
+        "security": [
+          {
+            "authUser": [],
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/{complianceCheckUID}/results": {
+      "get": {
+        "summary": "Returns a list of all compliance results from a given compliance check",
+        "description": "Returns a list of all compliance results from a given compliance check",
+        "operationId": "GET--v1--building--s---complianceCheckId--s",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Compliance Results. Equivalent XML Response is returned if content type is set appropriately.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ComplianceResultDataItem"
+                  }
+                }
+              },
+              "required": [
+                "results"
+              ]
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of the compliance check being considered",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "start",
+            "type": "string",
+            "description":"The Start Date/Time to query",
+            "format": "date-time",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "end",
+            "type": "string",
+            "description":"The End Date/Time to query",
+            "format": "date-time",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "description":"A free text search field to search results",
+            "in": "query",
+            "required": false
+          }
+        ]
+      },
+      "post": {
+        "summary": "Enables the submission of compliance results to the rule engine. This is used for the manual specification of top level results where automated computation is not possible",
+        "description": "Enables the submission of compliance results to the rule engine. This is used for the manual specification of top level results where automated computation is not possible",
+        "operationId": "POST--v1--complianceCheckUID--resultspost",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "success"
+              ],
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "authUser": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "complianceCheckUID",
+            "description":"The Unique ID of a given compliance check",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dataItems": {
+                  "description":"A set of results submitted to the rule engine.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ComplianceResultSubmission"
+                  }
+                }
+              }
+            },
+            "in": "body"
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ServerIdentity": {
+      "title": "Represents the basic metadata of the rule engine ",
+      "description": "Represents the basic metadata of the rule engine",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description":"The name of this rule engine"
+        },
+        "description": {
+          "type": "string",
+          "description":"The description of this rule engine"
+        },
+        "operator": {
+          "type": "string",
+          "description":"The name of the organisation operating this rule engine"
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "operator",
+        "securityServiceType",
+        "securityServiceURI"
+      ]
+    },
+    "IDSet": {
+      "title": "A Set of IDs of available entities",
+      "description": "Represents a set of entity IDs and their associated metadata",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description":"The entity ID",
+        },
+        "type": {
+          "type": "string",
+          "description":"The type of the object",
+        },
+        "friendlyName": {
+          "type": "string",
+          "description":"A friendly name to represent the object",
+        },
+        "keyVariables": {
+          "type": "array",
+          "description":"A list of key data items for this entity that the rule engine thinks the connecting data source needs to be aware of in order to contextualise itself",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requiredData": {
+          "description":"A list of data required by the rule engine about this entity. This can either be a request for data or a request to answer a question",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties":{
+              "id":{
+                "description":"An ID of this data item to be used when sending its result back to the rule engine",
+                "type": "string"
+              },
+              "propertyName":{
+                "description":"The name of the property that we wish to retrieve",
+                "type": "string"
+              },
+              "unit":{
+                "description":"The unit requested - defaults to unitless if absent",
+                "type": "string"
+              },
+              "complianceDocumentReference": {
+                "type": "string",
+                "description":"The URI of the clause within a compliance document that this result is generated from"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "complianceDocunentReference",
+        "keyVariables",
+        "requiredData"
+      ]
+    },
+    "InitialisationData": {
+      "title": "A Set of Metadata required to initalise a compliance check",
+      "description": "Represents a set of metadata to initialise the compliance check",
+      "type": "object",
+      "properties": {
+        "operationMode":{
+            "type":"string",
+            "enum":[
+              "precheck",
+              "forassessment"
+            ]
+        },
+        "lifecyclestage":{
+          "type": "string",
+          "description":"The project lifecycle stage of this check. Taken from the RIBA2020/CIC plan of work - <a href='https://www.designingbuildings.co.uk/wiki/RIBA_plan_of_work' target=_blank>here</a>. ",
+        },
+        "projectSecurityServiceType": {
+          "type": "string",
+          "description":"The type of authorisation/authentication service used by this project",
+        },
+        "projectSecurityServiceURI": {
+          "type": "string",
+          "description":"The URL of the OAUTH2 security service utilised by this project",
+        },
+        "complianceDocumentReference": {
+          "type": "array",
+          "description":"The URI of the clause within a compliance document that is used for this compliance check",
+          "items": {
+            "type": "string",
+          }
+        },
+        "modelServerType": {
+          "type": "string",
+          "description":"A textual identifcation of the type of model server being utilised."
+        },
+        "modelServerURL": {
+          "type": "string",
+          "description":"A URI to access a model on a model server. This is passed to building control to allow model access."
+        },
+        "UPRN": {
+          "type": "string",
+          "description":"The UPRN of the building being considered - as described <a href='https://www.ordnancesurvey.co.uk/business-government/products/open-uprn' target='_blank'>here</a>"
+        },
+        "regulatorIdentification": {
+          "description":"A reference to the regulatory body that should assess this check, or blank if it is not for external assessment",
+          "type": "string"
+        },
+        "individuals": {
+          "description":"A set of individuals involved in the compliance check",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Individual"
+          }
+        },
+        "address": {
+          "description":"The address where the work is to be carried out",
+          "type": "string"
+        },
+        "postcode": {
+          "description":"The postcode where the work is to be carried out",
+          "type": "string"
+        },
+        "description": {
+          "description":"A full description of the work",
+          "type": "string"
+        },
+        "presentUse": {
+          "description":"The present use of the building",
+          "type": "string"
+        },
+        "proposedUse": {
+          "description":"The proposed use of the building",
+          "type": "string"
+        },
+        "fireSafetyOrder": {
+          "description":"In scope of Regulatory Reform (Fire Safety) Order 2005",
+          "type": "boolean"
+        },
+        "consentToExtension": {
+          "description":"Does applicant consent to extension of proscribed period",
+          "type": "boolean"
+        },
+        "consentToConditions": {
+          "description":"Does applicant consent to conditions being applied",
+          "type": "boolean"
+        },
+        "electricalSafetyConfirmation": {
+          "description":"Will any electrical installation work be designed, constructed, inspected and tested in accordance with BS7671 or will it be undertaken by an electrician registered with a competent persons scheme?",
+          "type": "boolean"
+        }
+        
+      },
+      "required": [
+        "complianceDocumentURL",
+        "UPRN"
+      ]
+    },
+    "Answer": {
+      "title": "An answers to questions posed by the rule engine",
+      "description": "Represents an answer to questions posed by the rule engine",
+      "type": "object",
+      "properties": {
+        "propertyId": {
+          "type": "string",
+          "description":"The id of the property being answered"
+        },
+        "id": {
+                "description":"The Entity ID to which this answer is relevant",
+                "type": "string"
+        },
+        "answer": {
+          "description":"The actual answer",
+          "enum": [
+            "true",
+            "false",
+            "unknown"
+          ]
+        },
+        "missValue":{
+          "description":"The optional miss value. This is an indication, if the answer is false, how far out of tolerance the value is.",
+          "type":"string"
+        },
+        "supportingFileData":{
+          "description":"The BASE64 Encoded File Data that supports/evidences this answer",
+          "type":"string"
+        },
+        "supportingFileContentType":{
+          "description":"The MIME Content Type of the Support file data (if present)",
+          "type":"string"
+        }
+      },
+      "required": [
+        "propertyId",
+        "id",
+        "answer"
+      ]
+    },
+    "DataItem": {
+      "title": "A Data Item returned in response to requests from the rule engine",
+      "description": "Represents a  data item returned in response to requests from the rule engine",
+      "type": "object",
+      "properties": {
+              "propertyId": {
+                "type": "string",
+                "description":"The id of the property being answered"
+              },
+              "id": {
+                "description":"The Entity ID to which this data item is relevant",
+                "type": "string"
+              },
+              "data": {
+                "description":"The data item being returned",
+                "type": "string"
+              }
+      },
+      "required": [
+        "propertyId",
+        "id",
+        "data"
+      ]
+    },
+    "ComplianceResultDataItem": {
+      "Name": "The a result from a compliance check",
+      "description": "Represents an individual result from a compliance check",
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "description":"Either the clause reference or the property reference depending on the context the reuslt is retrieved"
+        },
+        "time": {
+          "type": "string",
+          "format":"date-time",
+          "description":"The date/time that this result was generated"
+        },
+        "reasons": {
+          "type": "array",
+          "description":"A set of reasons why this result has been computed this includes information on what data items have been used, what software tools produced this results, if the result was automatically or human generated etc...",
+          "items":{
+            "type":"string"
+          }
+        },
+        "attributation": {
+          "type": "string",
+          "description":"A string describing what/who generated this result"
+        },
+        "result":{
+          "description":"The result that has been computed",
+          "type":"string",
+          "enum": [
+            "true",
+            "false"
+          ]
+        },
+        "supportingFileData":{
+          "description":"The BASE64 Encoded File Data that supports/evidences this answer",
+          "type": "array",
+          "items":{
+            "type":"string"
+          }
+        },
+        "supportingFileContentType":{
+          "description":"The MIME Content Type of the Support file data (if present)",
+          "type": "array",
+          "items":{
+            "type":"string"
+          }
+        }
+      },
+      "required": [
+        "complianceDocument",
+        "complianceCheckUID"
+      ]
+    },
+    "ComplianceResultSubmission": {
+      "Name": "The Submission of a result of a clause",
+      "description": "The Submission of a result of a clause",
+      "type": "object",
+      "properties": {
+        "complianceDocumentReference": {
+          "type": "string",
+          "description":"The URI of the clause within a compliance document that this result is generated from"
+        },
+        "reasons": {
+          "type": "array",
+          "description":"A set of reasons why this result has been computed this includes information on what data items have been used, what software tools produced this results, if the result was automatically or human generated etc...",
+          "items":{
+            "type":"string"
+          }
+        },
+        "result":{
+          "description":"The result that has been computed",
+          "type":"string",
+          "enum": [
+            "true",
+            "false"
+          ]
+        },
+        "supportingFileData":{
+          "description":"The BASE64 Encoded File Data that supports/evidences this answer",
+          "type":"string"
+        },
+        "supportingFileContentType":{
+          "description":"The MIME Content Type of the Support file data (if present)",
+          "type":"string"
+        }
+      },
+      "required": [
+        "complianceDocument",
+        "complianceCheckUID"
+      ]
+    },
+    "Individual": {
+      "Name": "The Information Related to an individual named on a building regulations application",
+      "description": "The Information Related to an individual named on a building regulations application",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description":"The individuals title."
+        },
+        "name": {
+          "type": "string",
+          "description":"The individual's name",
+        },
+        "companyname": {
+          "type": "string",
+          "description":"The individual's company name",
+        },
+        "email": {
+          "type": "string",
+          "description":"The individual's email address",
+        },
+        "address": {
+          "type": "string",
+          "description":"The individual's address",
+        },
+        "postcode": {
+          "type": "string",
+          "description":"The individual's postcode",
+        },
+        "telephone": {
+          "type": "string",
+          "description":"The individual's telephone number",
+        },
+        "fax": {
+          "type": "string",
+          "description":"The individual's fax number",
+        },
+        "mobile": {
+          "type": "string",
+          "description":"The individual's mobile phone number",
+        },
+        "position": {
+          "type": "string",
+          "description":"The individual's position in the application",
+          "enum": [
+            "agent",
+            "applicant"
+          ]
+        },
+      },
+      "required": [
+        "title",
+        "name",
+        "email",
+        "address",
+        "telephone",
+        "position"
+      ]
+    }
+  }
+}

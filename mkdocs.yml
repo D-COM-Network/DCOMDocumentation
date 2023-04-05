@@ -1,7 +1,7 @@
 site_name: DCOM Compliance Ecosystem Documentation
 theme: windmill
-plugins:
-  - open-in-new-tab
+markdown_extensions:
+  - attr_list
 extra:
   logo: dcom.png
 nav:

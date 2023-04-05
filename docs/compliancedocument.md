@@ -2,7 +2,7 @@
 
 Key Resources Specifying the Compliance Document Format:
 
-1. [JSON Serialisation](https://d-com-network.github.io/DCOMDocumentation/resources/compliancedocument.html){format=_blank}
+1. [JSON Serialisation](https://d-com-network.github.io/DCOMDocumentation/resources/compliancedocument.html){.new-tab}
 2. [Compliance Document Examples](examplesPlain.md)
 3. <a href="https://d-com-network.github.io/DCOMDocumentation/htmlPlain.html" target="_blank">HTML Compliance Document</a>
 

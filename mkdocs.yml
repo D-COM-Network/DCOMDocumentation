@@ -1,5 +1,5 @@
 site_name: DCOM Compliance Ecosystem Documentation
-theme: windmill
+theme: readthedocs
 markdown_extensions:
   - attr_list
 extra:

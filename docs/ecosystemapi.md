@@ -25,7 +25,7 @@ This remainder of this page specifies the CUSTOM APIs for the Digital Compliance
 
 ###Results Service
 
-1. [API Specification](https://d-com-network.github.io/DCOMDocumentation/resources/resultserver"){.new-tab}
+1. [API Specification](https://d-com-network.github.io/DCOMDocumentation/resources/resultserver){.new-tab}
 
 ### Rule Engine
 

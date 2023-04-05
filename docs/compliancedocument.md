@@ -7,6 +7,6 @@ Key Resources Specifying the Compliance Document Format:
 3. [HTML Compliance Document](https://d-com-network.github.io/DCOMDocumentation/htmlPlain.html){.new-tab}
 
 ### RASE
-1. <a href="https://d-com-network.github.io/DCOMDocumentation/resources/compliancedocumentRASE.html" target="_blank">JSON Schema with RASE](https://d-com-network.github.io/DCOMDocumentation/resources/compliancedocumentRASE.html){.new-tab}
+1. [JSON Schema with RASE](https://d-com-network.github.io/DCOMDocumentation/resources/compliancedocumentRASE.html){.new-tab}
 2. [Compliance Document Examples with RASE](examplesRASE.md)
 3. [HTML Compliance Document with RASE](https://d-com-network.github.io/DCOMDocumentation/htmlRase.html){.new-tab}

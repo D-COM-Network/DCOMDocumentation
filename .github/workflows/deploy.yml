@@ -24,7 +24,7 @@ jobs:
       - run: mkdir dist/resources
       - run: mkdir dist/dcomcore
       - run: python -m ensurepip
-      - run: python -m pip install mkdocs mkdocs-windmill json-schema-for-humans
+      - run: python -m pip install mkdocs mkdocs-windmill json-schema-for-humans mkdocs-open-in-new-tab
       - run: generate-schema-doc APIDefinitions/compliancedocument.schema.json dist/resources/compliancedocument.html
       - run: generate-schema-doc APIDefinitions/compliancedocument.schema-rase.json dist/resources/compliancedocumentRASE.html
       - run: generate-schema-doc APIDefinitions/compliancedocument.schema-explicit.json dist/resources/compliancedocumentEXPLICIT.html
